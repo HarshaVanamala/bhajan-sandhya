@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard — Bhajan Sandhya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --saffron: #E8650A; --deep-red: #7A1C10;
+      --gold: #C9922A; --gold-light: #F0C060;
+      --cream: #FAF3E8; --dark: #0E0604;
+      --surface: rgba(255,255,255,0.03);
+      --border: rgba(201,146,42,0.15);
+    }
+    body {
+      background: var(--dark); color: var(--cream);
+      font-family: 'Inter', sans-serif; min-height: 100vh;
+      padding: 1.5rem; max-width: 960px; margin: 0 auto;
+    }
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 2rem; padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .header-left { display: flex; align-items: center; gap: 0.75rem; }
+    .logo-img {
+      width: 38px; height: 38px; border-radius: 50%;
+      object-fit: cover; border: 1px solid rgba(201,146,42,0.3);
+    }
+    .h-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold-light); }
+    .h-sub { font-size: 0.65rem; color: rgba(250,243,232,0.3); }
+    .header-right { display: flex; gap: 0.75rem; align-items: center; }
+    .refresh-btn {
+      background: rgba(201,146,42,0.1); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.4rem 0.8rem;
+      color: var(--gold); font-size: 0.72rem; cursor: pointer;
+      letter-spacing: 0.06em;
+    }
+    .refresh-btn:hover { background: rgba(201,146,42,0.18); }
+    .logout { font-size: 0.7rem; color: rgba(250,243,232,0.28); text-decoration: none; }
+    .logout:hover { color: var(--gold); }
+
+    /* STAT CARDS */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem; margin-bottom: 2rem;
+    }
+    @media (min-width: 600px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.2rem; text-align: center;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem; line-height: 1;
+      color: var(--gold-light); margin-bottom: 0.3rem;
+    }
+    .stat-label {
+      font-size: 0.62rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(250,243,232,0.35);
+    }
+    .stat-card.highlight .stat-num { color: #7dde8b; }
+
+    /* SECTIONS */
+    .section { margin-bottom: 2rem; }
+    .section-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: 0.68rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--gold);
+    }
+
+    /* RECENT CHECKINS */
+    .checkin-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .checkin-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 0.75rem 1rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .ci-name { font-size: 0.88rem; color: var(--cream); }
+    .ci-meta { font-size: 0.7rem; color: rgba(250,243,232,0.35); }
+    .ci-time { font-size: 0.72rem; color: rgba(250,243,232,0.4); text-align: right; }
+
+    /* SEARCH + TABLE */
+    .search-wrap { margin-bottom: 1rem; }
+    .search-input {
+      width: 100%;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 0.75rem 1rem;
+      color: var(--cream); font-size: 0.85rem;
+      font-family: 'Inter', sans-serif; outline: none;
+    }
+    .search-input:focus { border-color: var(--gold); }
+    .search-input::placeholder { color: rgba(250,243,232,0.2); }
+
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%; border-collapse: collapse; font-size: 0.78rem;
+    }
+    th {
+      text-align: left; padding: 0.5rem 0.75rem;
+      font-size: 0.62rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--gold);
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid rgba(201,146,42,0.06);
+      color: rgba(250,243,232,0.7);
+      white-space: nowrap;
+    }
+    tr:hover td { background: rgba(201,146,42,0.04); }
+    .badge-used {
+      background: rgba(45,122,58,0.2); color: #7dde8b;
+      border: 1px solid rgba(45,122,58,0.3);
+      border-radius: 4px; padding: 0.15rem 0.5rem;
+      font-size: 0.65rem; letter-spacing: 0.05em;
+    }
+    .badge-pending {
+      background: rgba(201,146,42,0.12); color: var(--gold);
+      border: 1px solid rgba(201,146,42,0.2);
+      border-radius: 4px; padding: 0.15rem 0.5rem;
+      font-size: 0.65rem;
+    }
+
+    /* EXPORT */
+    .export-btn {
+      background: rgba(201,146,42,0.1); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.45rem 1rem;
+      color: var(--gold); font-size: 0.72rem; cursor: pointer;
+      letter-spacing: 0.06em;
+    }
+    .export-btn:hover { background: rgba(201,146,42,0.18); }
+
+    .empty { text-align: center; padding: 2rem; color: rgba(250,243,232,0.25); font-size: 0.82rem; }
+    .loading { text-align: center; padding: 2rem; color: rgba(250,243,232,0.3); font-size: 0.82rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <img src="/static/images/logo.jpeg" class="logo-img" alt="Logo"/>
+    <div>
+      <div class="h-title">Admin Dashboard</div>
+      <div class="h-sub">Bhajan Sandhya · July 4, 2026</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="refresh-btn" onclick="loadStats()">↻ Refresh</button>
+    <a href="/logout" class="logout">Log out</a>
+  </div>
+</header>
+
+<!-- STATS -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-num" id="statRegs">—</div>
+    <div class="stat-label">Registrations</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" id="statTotal">—</div>
+    <div class="stat-label">Total Passes</div>
+  </div>
+  <div class="stat-card highlight">
+    <div class="stat-num" id="statUsed">—</div>
+    <div class="stat-label">Checked In</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" id="statPending">—</div>
+    <div class="stat-label">Pending</div>
+  </div>
+</div>
+
+<!-- RECENT CHECK-INS -->
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Recent Check-ins</span>
+  </div>
+  <div class="checkin-list" id="recentList">
+    <div class="loading">Loading...</div>
+  </div>
+</div>
+
+<!-- ALL PASSES -->
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">All Passes</span>
+    <button class="export-btn" onclick="exportCSV()">↓ Export CSV</button>
+  </div>
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="searchInput" placeholder="Search by name, code, phone, email..." oninput="filterTable()"/>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Code</th>
+          <th>Pass</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th>Check-in</th>
+          <th>Msg Sent</th>
+        </tr>
+      </thead>
+      <tbody id="passTable">
+        <tr><td colspan="7" class="loading">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  let allPasses = [];
+
+  async function loadStats() {
+    try {
+      const res = await fetch('/api/admin/stats');
+      const data = await res.json();
+
+      document.getElementById('statRegs').textContent = data.unique_registrations;
+      document.getElementById('statTotal').textContent = data.total_passes;
+      document.getElementById('statUsed').textContent = data.used;
+      document.getElementById('statPending').textContent = data.pending;
+
+      // Recent check-ins
+      const list = document.getElementById('recentList');
+      if (!data.recent_checkins || data.recent_checkins.length === 0) {
+        list.innerHTML = '<div class="empty">No check-ins yet.</div>';
+      } else {
+        list.innerHTML = data.recent_checkins.map(c => `
+          <div class="checkin-item">
+            <div>
+              <div class="ci-name">${c.name}</div>
+              <div class="ci-meta">${c.code} · by ${c.volunteer || '—'}</div>
+            </div>
+            <div class="ci-time">${c.checkin || ''}</div>
+          </div>
+        `).join('');
+      }
+
+      allPasses = data.all_passes || [];
+      renderTable(allPasses);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function renderTable(passes) {
+    const tbody = document.getElementById('passTable');
+    if (!passes.length) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty">No passes found.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = passes.map(p => `
+      <tr>
+        <td>${p.name}</td>
+        <td style="font-family:monospace;letter-spacing:0.1em;">${p.code}</td>
+        <td style="color:rgba(250,243,232,0.4)">${p.pass_index}/${p.total}</td>
+        <td>${p.phone}</td>
+        <td><span class="${p.status === 'Used' ? 'badge-used' : 'badge-pending'}">${p.status}</span></td>
+        <td style="color:rgba(250,243,232,0.4)">${p.checkin || '—'}</td>
+        <td style="color:rgba(250,243,232,0.4)">${p.msg_sent || 'No'}</td>
+      </tr>
+    `).join('');
+  }
+
+  function filterTable() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    if (!q) { renderTable(allPasses); return; }
+    const filtered = allPasses.filter(p =>
+      (p.name || '').toLowerCase().includes(q) ||
+      (p.code || '').toLowerCase().includes(q) ||
+      (p.phone || '').toLowerCase().includes(q) ||
+      (p.email || '').toLowerCase().includes(q)
+    );
+    renderTable(filtered);
+  }
+
+  function exportCSV() {
+    const headers = ['Name','Code','Pass','Email','Phone','Status','Check-in','Msg Sent'];
+    const rows = allPasses.map(p =>
+      [p.name, p.code, `${p.pass_index}/${p.total}`, p.email, p.phone, p.status, p.checkin || '', p.msg_sent || 'No']
+      .map(v => `"${v}"`).join(',')
+    );
+    const csv = [headers.join(','), ...rows].join('\n');
+    const a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    a.download = 'bhajan-sandhya-passes.csv';
+    a.click();
+  }
+
+  loadStats();
+  setInterval(loadStats, 20000); // auto-refresh every 20s
+</script>
+</body>
+</html>

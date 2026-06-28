@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Volunteer Login — Bhajan Sandhya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --saffron: #E8650A; --deep-red: #7A1C10;
+      --gold: #C9922A; --gold-light: #F0C060;
+      --cream: #FAF3E8; --dark: #0E0604;
+    }
+    body {
+      background: var(--dark);
+      color: var(--cream);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem;
+    }
+    .card {
+      width: 100%; max-width: 380px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,146,42,0.2);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    .logo-img {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid rgba(201,146,42,0.4);
+      margin-bottom: 1.2rem;
+    }
+    .eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--gold-light);
+      margin-bottom: 0.3rem;
+    }
+    .sub {
+      font-size: 0.75rem;
+      color: rgba(250,243,232,0.35);
+      margin-bottom: 2rem;
+    }
+    .field {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,146,42,0.25);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      width: 100%;
+      color: var(--cream);
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+    .field:focus { border-color: var(--gold); }
+    .btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--saffron), var(--deep-red));
+      border: none;
+      border-radius: 10px;
+      padding: 0.9rem;
+      color: #fff;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .error {
+      background: rgba(122,28,16,0.35);
+      border: 1px solid rgba(232,101,10,0.3);
+      border-radius: 8px;
+      padding: 0.7rem;
+      font-size: 0.78rem;
+      color: #ffb088;
+      margin-bottom: 1rem;
+    }
+    .back {
+      display: block;
+      margin-top: 1.5rem;
+      font-size: 0.72rem;
+      color: rgba(250,243,232,0.3);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+    }
+    .back:hover { color: var(--gold); }
+  </style>
+</head>
+<body>
+<div class="card">
+  <img src="/static/images/logo.jpeg" class="logo-img" alt="Logo"/>
+  <p class="eyebrow">Volunteer Access</p>
+  <h1>Gate Entry Portal</h1>
+  <p class="sub">Bhajan Sandhya · July 4, 2026</p>
+
+  {% if error %}
+  <div class="error">{{ error }}</div>
+  {% endif %}
+
+  <form method="POST">
+    <input type="password" name="password" class="field" placeholder="Volunteer password" required autofocus/>
+    <button type="submit" class="btn">Enter Portal</button>
+  </form>
+
+  <a href="/" class="back">← Back to visitor page</a>
+</div>
+</body>
+</html>

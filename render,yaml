@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: bhajan-sandhya
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: SECRET_KEY
+        value: bhajan-sandhya-secret-2026
+      - key: SPREADSHEET_NAME
+        value: Music Event TEST
+      - key: VOLUNTEER_PASSWORD
+        value: Volunteer@BShk
+      - key: ADMIN_PASSWORD
+        value: Admin#BShk

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bhajan Sandhya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --saffron:    #E8650A;
+      --deep-red:   #7A1C10;
+      --gold:       #C9922A;
+      --gold-light: #F0C060;
+      --cream:      #FAF3E8;
+      --dark:       #0E0604;
+      --text-main:  #2B1000;
+    }
+
+    body {
+      background: var(--dark);
+      color: var(--cream);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0 1.5rem 4rem;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(232,101,10,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(122,28,16,0.25) 0%, transparent 55%),
+        var(--dark);
+      z-index: 0;
+    }
+
+    /* Subtle mandala ring */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      top: -10vw; left: 50%;
+      transform: translateX(-50%);
+      width: 70vw; height: 70vw;
+      max-width: 500px; max-height: 500px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,146,42,0.12);
+      box-shadow:
+        0 0 0 20px rgba(201,146,42,0.05),
+        0 0 0 40px rgba(201,146,42,0.03);
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: relative; z-index: 10;
+      width: 100%; max-width: 900px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(201,146,42,0.15);
+      margin-bottom: 3rem;
+    }
+
+    .logo-wrap {
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+
+    .logo-img {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid rgba(201,146,42,0.4);
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--gold-light);
+      letter-spacing: 0.04em;
+    }
+
+    .nav-links a {
+      color: rgba(250,243,232,0.55);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold-light); }
+
+    /* ── POSTER ── */
+    .poster-wrap {
+      position: relative; z-index: 5;
+      width: 100%; max-width: 340px;
+      margin-bottom: 2.5rem;
+    }
+
+    .poster-wrap img {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow:
+        0 0 60px rgba(232,101,10,0.25),
+        0 0 120px rgba(122,28,16,0.2);
+      border: 1px solid rgba(201,146,42,0.2);
+    }
+
+    /* ── TAGLINE ── */
+    .tagline {
+      position: relative; z-index: 5;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .tagline .eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .tagline h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 900;
+      line-height: 1.1;
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--saffron) 60%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.6rem;
+    }
+
+    .tagline p {
+      font-size: 0.85rem;
+      color: rgba(250,243,232,0.5);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── CODE BOX ── */
+    .code-section {
+      position: relative; z-index: 5;
+      width: 100%; max-width: 420px;
+    }
+
+    .code-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+
+    .code-input-wrap {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .code-input {
+      flex: 1;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,146,42,0.3);
+      border-radius: 10px;
+      padding: 0.9rem 1.2rem;
+      font-family: 'Inter', monospace;
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      color: var(--cream);
+      text-transform: uppercase;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .code-input::placeholder { color: rgba(250,243,232,0.2); letter-spacing: 0.1em; }
+    .code-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,146,42,0.12);
+    }
+
+    .btn-verify {
+      background: linear-gradient(135deg, var(--saffron), var(--deep-red));
+      border: none;
+      border-radius: 10px;
+      padding: 0.9rem 1.4rem;
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+    .btn-verify:hover { opacity: 0.88; }
+    .btn-verify:active { transform: scale(0.97); }
+
+    .hint {
+      text-align: center;
+      font-size: 0.72rem;
+      color: rgba(250,243,232,0.28);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── ERROR / RESULT ── */
+    .msg-error {
+      background: rgba(122,28,16,0.35);
+      border: 1px solid rgba(232,101,10,0.3);
+      border-radius: 10px;
+      padding: 0.9rem 1.2rem;
+      font-size: 0.82rem;
+      color: #ffb088;
+      text-align: center;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    /* ── QR RESULT ── */
+    .qr-result {
+      display: none;
+      margin-top: 2rem;
+      text-align: center;
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .qr-card {
+      background: linear-gradient(160deg, rgba(201,146,42,0.08), rgba(232,101,10,0.05));
+      border: 1px solid rgba(201,146,42,0.25);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+    }
+
+    .qr-greeting {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--gold-light);
+      margin-bottom: 0.3rem;
+    }
+
+    .qr-sub {
+      font-size: 0.78rem;
+      color: rgba(250,243,232,0.45);
+      margin-bottom: 1.5rem;
+    }
+
+    .qr-image {
+      width: 200px; height: 200px;
+      border-radius: 12px;
+      border: 3px solid rgba(201,146,42,0.4);
+      margin: 0 auto 1.2rem;
+      display: block;
+      box-shadow: 0 0 30px rgba(201,146,42,0.15);
+    }
+
+    .qr-code-display {
+      font-family: monospace;
+      font-size: 1.3rem;
+      letter-spacing: 0.2em;
+      color: var(--gold-light);
+      margin-bottom: 0.4rem;
+    }
+
+    .qr-pass-info {
+      font-size: 0.72rem;
+      color: rgba(250,243,232,0.35);
+      margin-bottom: 1.5rem;
+    }
+
+    .qr-instructions {
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+      padding: 1rem;
+      font-size: 0.78rem;
+      color: rgba(250,243,232,0.5);
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    .qr-instructions strong {
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ── EVENT INFO STRIP ── */
+    .event-info {
+      position: relative; z-index: 5;
+      width: 100%; max-width: 420px;
+      display: flex;
+      justify-content: space-around;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(201,146,42,0.12);
+    }
+
+    .info-item {
+      text-align: center;
+    }
+
+    .info-icon {
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .info-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.2rem;
+    }
+
+    .info-value {
+      font-size: 0.78rem;
+      color: rgba(250,243,232,0.65);
+      line-height: 1.4;
+    }
+
+    /* ── LOADING ── */
+    .spinner {
+      width: 20px; height: 20px;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: inline-block; vertical-align: middle; margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 480px) {
+      .poster-wrap { max-width: 280px; }
+    }
+  </style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-bg"></div>
+
+  <nav>
+    <div class="logo-wrap">
+      <img src="/static/images/logo.jpeg" alt="Kirtan Rasiks" class="logo-img"/>
+      <span class="logo-text">Kirtan Rasiks</span>
+    </div>
+    <div class="nav-links">
+      <a href="/volunteer">Volunteer</a>
+    </div>
+  </nav>
+
+  <div class="poster-wrap">
+    <img src="/static/images/poster.jpeg" alt="Bhajan Sandhya Poster"/>
+  </div>
+
+  <div class="tagline">
+    <p class="eyebrow">॥ हरे कृष्ण ॥</p>
+    <h1>Bhajan Sandhya</h1>
+    <p>Enter your pass code to receive your entry QR</p>
+  </div>
+
+  <div class="code-section">
+    <p class="code-label">Your Pass Code</p>
+    <div class="code-input-wrap">
+      <input
+        type="text"
+        id="codeInput"
+        class="code-input"
+        placeholder="A8K2X9QP"
+        maxlength="8"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button class="btn-verify" onclick="verifyPass()" id="verifyBtn">
+        Get QR
+      </button>
+    </div>
+    <p class="hint">8-character code sent to you via WhatsApp / Email</p>
+
+    <div class="msg-error" id="errorMsg"></div>
+
+    <div class="qr-result" id="qrResult">
+      <div class="qr-card">
+        <p class="qr-greeting" id="qrName"></p>
+        <p class="qr-sub">Show this QR at the gate. Hare Krishna 🙏</p>
+        <img id="qrImage" class="qr-image" src="" alt="Entry QR Code"/>
+        <p class="qr-code-display" id="qrCode"></p>
+        <p class="qr-pass-info" id="qrPassInfo"></p>
+        <div class="qr-instructions">
+          <strong>At the Gate</strong>
+          Keep your screen bright and show this QR to the volunteer at entry. Each pass is for one person only.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="event-info">
+    <div class="info-item">
+      <div class="info-icon">📅</div>
+      <div class="info-label">Date</div>
+      <div class="info-value">July 4, 2026<br/>Saturday</div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">🕔</div>
+      <div class="info-label">Time</div>
+      <div class="info-value">5:30 PM<br/>onwards</div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">📍</div>
+      <div class="info-label">Venue</div>
+      <div class="info-value">Marri Krishna Hall<br/>Tarnaka</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const input = document.getElementById('codeInput');
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') verifyPass(); });
+  input.addEventListener('input', () => {
+    document.getElementById('errorMsg').style.display = 'none';
+    document.getElementById('qrResult').style.display = 'none';
+  });
+
+  async function verifyPass() {
+    const code = input.value.trim().toUpperCase();
+    if (code.length !== 8) {
+      showError('Pass code must be exactly 8 characters.');
+      return;
+    }
+
+    const btn = document.getElementById('verifyBtn');
+    btn.innerHTML = '<span class="spinner"></span> Checking...';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('/api/verify-pass', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        document.getElementById('qrName').textContent = `Jai Shri Krishna, ${data.name} 🙏`;
+        document.getElementById('qrCode').textContent = data.code;
+        document.getElementById('qrPassInfo').textContent =
+          `Pass ${data.pass_index} of ${data.total_passes}`;
+        document.getElementById('qrImage').src = `data:image/png;base64,${data.qr}`;
+        document.getElementById('errorMsg').style.display = 'none';
+        document.getElementById('qrResult').style.display = 'block';
+      } else {
+        showError(data.message);
+      }
+    } catch {
+      showError('Network error. Please try again.');
+    } finally {
+      btn.innerHTML = 'Get QR';
+      btn.disabled = false;
+    }
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('errorMsg');
+    el.textContent = msg;
+    el.style.display = 'block';
+    document.getElementById('qrResult').style.display = 'none';
+  }
+</script>
+</body>
+</html>
