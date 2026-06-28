@@ -251,3 +251,22 @@ def logout():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+@app.route("/debug")
+def debug():
+    import os, json
+    creds_env = os.environ.get("GOOGLE_CREDENTIALS", "")
+    result = {
+        "GOOGLE_CREDENTIALS_present": bool(creds_env),
+        "GOOGLE_CREDENTIALS_length": len(creds_env),
+        "SPREADSHEET_NAME": os.environ.get("SPREADSHEET_NAME", "NOT SET"),
+    }
+    if creds_env:
+        try:
+            parsed = json.loads(creds_env)
+            result["json_valid"] = True
+            result["client_email"] = parsed.get("client_email", "missing")
+        except Exception as e:
+            result["json_valid"] = False
+            result["json_error"] = str(e)
+    return jsonify(result)
