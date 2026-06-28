@@ -24,7 +24,8 @@ SPREADSHEET_NAME = os.environ.get("SPREADSHEET_NAME", "Music Event TEST")
 VOLUNTEER_PASSWORD = os.environ.get("VOLUNTEER_PASSWORD", "Volunteer@BShk")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "Admin#BShk")
 
-sheets = GoogleSheetsService()
+def get_sheets():
+    return GoogleSheetsService()
 
 
 def generate_qr_base64(data: str) -> str:
@@ -56,7 +57,7 @@ def verify_pass():
         return jsonify({"success": False, "message": "Please enter your pass code."})
 
     try:
-        passes_sheet = sheets.open_spreadsheet(SPREADSHEET_NAME).worksheet("Passes")
+        passes_sheet = get_sheets().open_spreadsheet(SPREADSHEET_NAME).worksheet("Passes")
         records = passes_sheet.get_all_records()
     except Exception as e:
         return jsonify({"success": False, "message": "Could not reach database. Try again."})
@@ -127,7 +128,7 @@ def checkin():
     volunteer_name = request.json.get("volunteer", "Volunteer")
 
     try:
-        passes_sheet = sheets.open_spreadsheet(SPREADSHEET_NAME).worksheet("Passes")
+        passes_sheet = get_sheets().open_spreadsheet(SPREADSHEET_NAME).worksheet("Passes")
         records = passes_sheet.get_all_records()
     except Exception:
         return jsonify({"success": False, "message": "Database error."})
@@ -195,7 +196,7 @@ def admin_stats():
         return jsonify({"error": "Not authorized"}), 403
 
     try:
-        passes_sheet = sheets.open_spreadsheet(SPREADSHEET_NAME).worksheet("Passes")
+        passes_sheet = get_sheets().open_spreadsheet(SPREADSHEET_NAME).worksheet("Passes")
         records = passes_sheet.get_all_records()
     except Exception:
         return jsonify({"error": "Database error"}), 500
