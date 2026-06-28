@@ -60,7 +60,7 @@ def verify_pass():
         passes_sheet = get_sheets().open_spreadsheet(SPREADSHEET_NAME).worksheet("Passes")
         records = passes_sheet.get_all_records()
     except Exception as e:
-        return jsonify({"success": False, "message": "Could not reach database. Try again."})
+        return jsonify({"success": False, "message": f"Database error: {str(e)}"})
 
     for i, row in enumerate(records):
         if str(row.get("Pass Code", "")).strip().upper() == code:
