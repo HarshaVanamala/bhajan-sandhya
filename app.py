@@ -252,6 +252,91 @@ def logout():
 if __name__ == "__main__":
     app.run(debug=True)
 
+
+@app.route("/api/scan-qr", methods=["POST"])
+def scan_qr():
+    if not session.get("volunteer") and not session.get("admin"):
+        return jsonify({"success": False, "message": "Not authorized."})
+
+    file = request.files.get("image")
+    volunteer_name = request.form.get("volunteer", "Volunteer")
+
+    if not file:
+        return jsonify({"success": False, "message": "No image received."})
+
+    try:
+        from PIL import Image
+        from pyzbar.pyzbar import decode as pyzbar_decode
+        import io
+
+        img = Image.open(io.BytesIO(file.read()))
+        # Convert to RGB if needed
+        if img.mode != "RGB":
+            img = img.convert("RGB")
+
+        decoded_objects = pyzbar_decode(img)
+
+        if not decoded_objects:
+            return jsonify({"success": False, "message": "No QR code found in image. Make sure the full QR is visible and try again."})
+
+        qr_data = decoded_objects[0].data.decode("utf-8")
+        parts = qr_data.split("|")
+
+        if parts[0] == "BHAJAN-SANDHYA" and len(parts) >= 2:
+            code = parts[1].strip().upper()
+        elif len(qr_data) == 8 and qr_data.isalnum():
+            code = qr_data.upper()
+        else:
+            return jsonify({"success": False, "message": f"QR detected but not a valid pass. Content: {qr_data}"})
+
+    except ImportError:
+        return jsonify({"success": False, "message": "QR decoder not installed on server."})
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Error reading image: {str(e)}"})
+
+    # Now check in using the code
+    try:
+        passes_sheet = get_sheets().open_spreadsheet(SPREADSHEET_NAME).worksheet("Passes")
+        records = passes_sheet.get_all_records()
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Database error: {str(e)}"})
+
+    for i, row in enumerate(records):
+        if str(row.get("Pass Code", "")).strip().upper() == code:
+            status = str(row.get("Status", "")).strip()
+            name = row.get("Name", "")
+            pass_index = row.get("Pass Index", "")
+            total = row.get("Total Passes", "")
+
+            if status == "Used":
+                checkin_time = row.get("Check-in Time", "")
+                return jsonify({
+                    "success": False,
+                    "already_used": True,
+                    "name": name,
+                    "code": code,
+                    "message": f"Already checked in at {checkin_time}",
+                })
+
+            row_number = i + 2
+            keys = list(row.keys())
+            from datetime import datetime
+            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            passes_sheet.update_cell(row_number, keys.index("Status") + 1, "Used")
+            passes_sheet.update_cell(row_number, keys.index("Check-in Time") + 1, now)
+            passes_sheet.update_cell(row_number, keys.index("Volunteer") + 1, volunteer_name)
+
+            return jsonify({
+                "success": True,
+                "name": name,
+                "code": code,
+                "pass_index": pass_index,
+                "total_passes": total,
+                "message": f"✓ Entry granted for {name}",
+            })
+
+    return jsonify({"success": False, "message": "Pass code not found in system."})
+
 @app.route("/debug")
 def debug():
     import os, json

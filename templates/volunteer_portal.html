@@ -7,11 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --saffron: #E8650A; --deep-red: #7A1C10;
-      --gold: #C9922A; --gold-light: #F0C060;
-      --cream: #FAF3E8; --dark: #0E0604;
-    }
+    :root { --saffron: #E8650A; --deep-red: #7A1C10; --gold: #C9922A; --gold-light: #F0C060; --cream: #FAF3E8; --dark: #0E0604; }
     body { background: var(--dark); color: var(--cream); font-family: 'Inter', sans-serif; min-height: 100vh; padding: 1.5rem; }
     header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(201,146,42,0.15); }
     .header-left { display: flex; align-items: center; gap: 0.6rem; }
@@ -20,32 +16,24 @@
     .header-sub { font-size: 0.65rem; color: rgba(250,243,232,0.35); }
     .logout { font-size: 0.7rem; color: rgba(250,243,232,0.3); text-decoration: none; }
     .logout:hover { color: var(--gold); }
-
     .vol-name-wrap { background: rgba(255,255,255,0.03); border: 1px solid rgba(201,146,42,0.15); border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; }
     .vol-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
     .vol-input { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(201,146,42,0.2); border-radius: 8px; padding: 0.6rem 0.9rem; color: var(--cream); font-size: 0.85rem; font-family: 'Inter', sans-serif; outline: none; }
     .vol-input:focus { border-color: var(--gold); }
-
     .section-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; display: block; }
-
-    /* PHOTO SCAN METHOD */
     .scan-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(201,146,42,0.2); border-radius: 16px; padding: 1.5rem; text-align: center; margin-bottom: 1rem; }
     .scan-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-    .scan-desc { font-size: 0.8rem; color: rgba(250,243,232,0.5); margin-bottom: 1.2rem; line-height: 1.5; }
-    .btn-photo { display: inline-block; background: linear-gradient(135deg, var(--saffron), var(--deep-red)); border: none; border-radius: 10px; padding: 0.85rem 1.5rem; color: #fff; font-size: 0.88rem; font-weight: 500; cursor: pointer; width: 100%; margin-bottom: 0.5rem; }
-    /* Hidden file input that opens camera */
+    .scan-desc { font-size: 0.8rem; color: rgba(250,243,232,0.5); margin-bottom: 1.2rem; line-height: 1.6; }
+    .btn-photo { width: 100%; background: linear-gradient(135deg, var(--saffron), var(--deep-red)); border: none; border-radius: 10px; padding: 0.9rem 1.5rem; color: #fff; font-size: 0.9rem; font-weight: 500; cursor: pointer; }
+    .btn-photo:disabled { opacity: 0.5; cursor: not-allowed; }
     #cameraInput { display: none; }
-
-    .processing { display: none; text-align: center; padding: 1rem; color: var(--gold); font-size: 0.85rem; }
-
+    .status-msg { text-align: center; font-size: 0.82rem; color: var(--gold); margin: 0.75rem 0; min-height: 1.2rem; }
     .divider { display: flex; align-items: center; gap: 0.75rem; margin: 1.2rem 0; color: rgba(250,243,232,0.2); font-size: 0.7rem; }
     .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(201,146,42,0.12); }
-
     .manual-wrap { display: flex; gap: 0.5rem; }
     .manual-input { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(201,146,42,0.25); border-radius: 10px; padding: 0.8rem 1rem; color: var(--cream); font-size: 1rem; font-family: monospace; letter-spacing: 0.15em; text-transform: uppercase; outline: none; }
     .manual-input:focus { border-color: var(--gold); }
     .btn-check { background: linear-gradient(135deg, var(--saffron), var(--deep-red)); border: none; border-radius: 10px; padding: 0.8rem 1.2rem; color: #fff; font-size: 0.82rem; font-weight: 500; cursor: pointer; white-space: nowrap; }
-
     .result-card { display: none; border-radius: 14px; padding: 1.5rem; margin-top: 1.2rem; text-align: center; animation: fadeUp 0.3s ease; }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .result-card.valid { background: rgba(45,122,58,0.2); border: 2px solid rgba(45,122,58,0.6); }
@@ -56,13 +44,10 @@
     .result-msg { font-size: 0.9rem; font-weight: 500; }
     .result-card.valid .result-msg { color: #7dde8b; }
     .result-card.invalid .result-msg { color: #ffb088; }
-
     .counter-strip { display: flex; gap: 0.75rem; margin-top: 2rem; }
     .counter-card { flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(201,146,42,0.12); border-radius: 12px; padding: 0.9rem; text-align: center; }
     .counter-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold-light); line-height: 1; margin-bottom: 0.3rem; }
     .counter-label { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(250,243,232,0.35); }
-
-    canvas { display: none; }
   </style>
 </head>
 <body>
@@ -84,18 +69,15 @@
 </div>
 
 <span class="section-label">Scan Visitor QR</span>
-
 <div class="scan-box">
   <div class="scan-icon">📷</div>
-  <p class="scan-desc">Point your camera at the visitor's QR code screen and capture it. The code will be detected automatically.</p>
-  <button class="btn-photo" onclick="document.getElementById('cameraInput').click()">
-    Open Camera to Scan QR
+  <p class="scan-desc">Tap the button, point your camera at the visitor's QR code, and capture. Python will decode it instantly on the server.</p>
+  <button class="btn-photo" id="scanBtn" onclick="document.getElementById('cameraInput').click()">
+    📷 Scan QR Code
   </button>
   <input type="file" id="cameraInput" accept="image/*" capture="environment"/>
 </div>
-
-<div class="processing" id="processing">⏳ Reading QR code...</div>
-<canvas id="qrCanvas"></canvas>
+<p class="status-msg" id="statusMsg"></p>
 
 <div class="divider">or enter code manually</div>
 
@@ -122,72 +104,53 @@
   </div>
 </div>
 
-<!-- Load jsQR for decoding captured image -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js"></script>
 <script>
   let sessionCount = 0;
 
-  // Handle photo capture
-  document.getElementById('cameraInput').addEventListener('change', function(e) {
+  document.getElementById('cameraInput').addEventListener('change', async function(e) {
     const file = e.target.files[0];
     if (!file) return;
 
-    document.getElementById('processing').style.display = 'block';
+    const btn = document.getElementById('scanBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Decoding...';
+    document.getElementById('statusMsg').textContent = 'Sending to server...';
 
-    const img = new Image();
-    const reader = new FileReader();
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('volunteer', document.getElementById('volName').value.trim() || 'Volunteer');
 
-    reader.onload = function(ev) {
-      img.onload = function() {
-        const canvas = document.getElementById('qrCanvas');
-        const ctx = canvas.getContext('2d');
-        // Resize large photos for reliable jsQR detection
-        const MAX = 800;
-        const scale = Math.min(MAX / img.width, MAX / img.height, 1);
-        canvas.width = Math.floor(img.width * scale);
-        canvas.height = Math.floor(img.height * scale);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const result = jsQR(imageData.data, imageData.width, imageData.height, {
-          inversionAttempts: "attemptBoth",
-        });
+    try {
+      const res = await fetch('/api/scan-qr', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
 
-        document.getElementById('processing').style.display = 'none';
+      if (data.success) {
+        sessionCount++;
+        document.getElementById('countSession').textContent = sessionCount;
+        document.getElementById('statusMsg').textContent = '';
+        showResult(true, data.name, `Pass ${data.pass_index} of ${data.total_passes} · ${data.code}`, data.message, false);
+        refreshCount();
+      } else if (data.already_used) {
+        document.getElementById('statusMsg').textContent = '';
+        showResult(false, data.name, data.code || '', data.message, true);
+      } else {
+        document.getElementById('statusMsg').textContent = data.message || 'Could not read QR. Try again.';
+      }
+    } catch(err) {
+      document.getElementById('statusMsg').textContent = 'Network error. Try again.';
+    }
 
-        if (result) {
-          const text = result.data;
-          const parts = text.split('|');
-          let code = null;
-
-          if (parts[0] === 'BHAJAN-SANDHYA' && parts[1]) {
-            code = parts[1].trim().toUpperCase();
-          } else if (text.length === 8 && /^[A-Z0-9]+$/i.test(text)) {
-            code = text.toUpperCase();
-          }
-
-          if (code) {
-            checkIn(code);
-          } else {
-            showResult(false, '', '', 'QR detected but not a valid Bhajan Sandhya pass. Try again.', false);
-          }
-        } else {
-          showResult(false, '', '', '❌ Could not read QR. Make sure the full QR is visible and try again.', false);
-        }
-
-        // Reset input so same image can be re-captured
-        e.target.value = '';
-      };
-      img.src = ev.target.result;
-    };
-    reader.readAsDataURL(file);
+    btn.disabled = false;
+    btn.textContent = '📷 Scan QR Code';
+    e.target.value = '';
   });
 
   async function checkIn(code) {
     code = code.trim().toUpperCase();
-    if (code.length !== 8) {
-      showResult(false, '', '', 'Pass code must be 8 characters.', false);
-      return;
-    }
+    if (code.length !== 8) { showResult(false, '', '', 'Pass code must be 8 characters.', false); return; }
     const volName = document.getElementById('volName').value.trim() || 'Volunteer';
     try {
       const res = await fetch('/api/checkin', {
@@ -206,9 +169,7 @@
       } else {
         showResult(false, '', code, data.message, false);
       }
-    } catch(e) {
-      showResult(false, '', code, 'Network error. Try again.', false);
-    }
+    } catch { showResult(false, '', code, 'Network error. Try again.', false); }
     document.getElementById('manualCode').value = '';
   }
 
@@ -226,18 +187,13 @@
   async function refreshCount() {
     try {
       const res = await fetch('/api/admin/stats');
-      if (res.ok) {
-        const data = await res.json();
-        document.getElementById('countIn').textContent = data.used || 0;
-      }
+      if (res.ok) { const data = await res.json(); document.getElementById('countIn').textContent = data.used || 0; }
     } catch {}
   }
 
   refreshCount();
   setInterval(refreshCount, 15000);
-  document.getElementById('manualCode').addEventListener('keydown', e => {
-    if (e.key === 'Enter') checkIn(e.target.value);
-  });
+  document.getElementById('manualCode').addEventListener('keydown', e => { if (e.key === 'Enter') checkIn(e.target.value); });
 </script>
 </body>
 </html>
